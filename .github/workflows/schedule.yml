@@ -1,4 +1,4 @@
-name: Update gist with random Xcode shortcut
+name: Update gist with rings view
 on:
   schedule:
     - cron: "0 0 * * *"
