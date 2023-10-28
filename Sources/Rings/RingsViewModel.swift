@@ -4,16 +4,16 @@
 
 import SwiftUI
 
-@Observable public class RingsViewModel {
+public class RingsViewModel: ObservableObject {
 
-    public let name: String
-    public let date: Date
-    public let activeEnergyBurned: Double
-    public let activeEnergyBurnedGoal: Double
-    public let appleStandHours: Double
-    public let standHoursGoal: Double
-    public let appleExerciseTime: Double
-    public let exerciseTimeGoal: Double
+    @Published public var name: String
+    @Published public var date: Date
+    @Published public var activeEnergyBurned: Double
+    @Published public var activeEnergyBurnedGoal: Double
+    @Published public var appleStandHours: Double
+    @Published public var standHoursGoal: Double
+    @Published public var appleExerciseTime: Double
+    @Published public var exerciseTimeGoal: Double
 
 
     public init(name: String,
