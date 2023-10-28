@@ -6,31 +6,35 @@ import SwiftUI
 
 public class RingsViewModel: ObservableObject {
 
+    enum Error: Swift.Error {
+
+        case noSummaryData
+    }
+
     @Published public var name: String
     @Published public var date: Date
-    @Published public var activeEnergyBurned: Double
-    @Published public var activeEnergyBurnedGoal: Double
-    @Published public var appleStandHours: Double
-    @Published public var standHoursGoal: Double
-    @Published public var appleExerciseTime: Double
-    @Published public var exerciseTimeGoal: Double
-
+    @Published public var activitySummary: ActivitySummary
 
     public init(name: String,
                 date: Date,
-                activeEnergyBurned: Double,
-                activeEnergyBurnedGoal: Double,
-                appleStandHours: Double,
-                standHoursGoal: Double,
-                appleExerciseTime: Double,
-                exerciseTimeGoal: Double) {
+                summaryPath: String) throws {
         self.name = name
         self.date = date
-        self.activeEnergyBurned = activeEnergyBurned
-        self.activeEnergyBurnedGoal = activeEnergyBurnedGoal
-        self.appleStandHours = appleStandHours
-        self.standHoursGoal = standHoursGoal
-        self.appleExerciseTime = appleExerciseTime
-        self.exerciseTimeGoal = exerciseTimeGoal
+        guard let summaryPath = Bundle.module.path(forResource: summaryPath, ofType: nil) else {
+            throw Error.noSummaryData
+        }
+        let summaryURL = URL(fileURLWithPath: summaryPath)
+        let data = try Data(contentsOf: summaryURL)
+        self.activitySummary = try JSONDecoder().decode(ActivitySummary.self, from: data)
+    }
+}
+
+extension RingsViewModel.Error: CustomStringConvertible {
+
+    var description: String {
+        switch self {
+        case .noSummaryData:
+            return "Failed to get summary data."
+        }
     }
 }

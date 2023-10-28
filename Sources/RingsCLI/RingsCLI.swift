@@ -24,14 +24,9 @@ struct RingsCLI: ParsableCommand {
 
     @MainActor
     mutating func run() throws {
-        let viewModel = RingsViewModel(name: inputFile,
-                                       date: .now,
-                                       activeEnergyBurned: 424,
-                                       activeEnergyBurnedGoal: 300,
-                                       appleStandHours: 9,
-                                       standHoursGoal: 10,
-                                       appleExerciseTime: 38,
-                                       exerciseTimeGoal: 30)
+        let viewModel = try RingsViewModel(name: inputFile,
+                                           date: .now,
+                                           summaryPath: "summary.json")
         let ringsView = RingsView(viewModel: viewModel)
         let size = CGSize(width: 442, height: 100)
         guard let data = ringsView.makeImageData(size: size) else {

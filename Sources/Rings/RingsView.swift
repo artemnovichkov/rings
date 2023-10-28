@@ -20,12 +20,9 @@ public struct RingsView: View {
                     .resizable()
                     .frame(width: 92, height: 92, alignment: .center)
                 VStack(alignment: .leading) {
-                    Text("\(viewModel.activeEnergyBurned, specifier: "%.0f")/\(viewModel.activeEnergyBurnedGoal, specifier: "%.0f")kcal")
-                        .foregroundStyle(Color.init(nsColor: .systemRed))
-                    Text("\(viewModel.appleExerciseTime, specifier: "%.0f")/\(viewModel.exerciseTimeGoal, specifier: "%.0f")min")
-                        .foregroundStyle(Color.init(nsColor: .systemGreen))
-                    Text("\(viewModel.appleStandHours, specifier: "%.0f")/\(viewModel.standHoursGoal, specifier: "%.0f")hrs")
-                        .foregroundStyle(Color.init(nsColor: .systemCyan))
+                    energy
+                    exercise
+                    standHours
                 }
                 .font(.largeTitle)
                 Spacer()
@@ -37,19 +34,33 @@ public struct RingsView: View {
         }
         .padding()
     }
+
+    private var energy: some View {
+        value(viewModel.activitySummary.activeEnergyBurned, viewModel.activitySummary.activeEnergyBurnedGoal, units: "kcal")
+            .foregroundStyle(Color.init(nsColor: .systemRed))
+    }
+
+    private var exercise: some View {
+        value(viewModel.activitySummary.appleExerciseTime, viewModel.activitySummary.exerciseTimeGoal, units: "min")
+            .foregroundStyle(Color.init(nsColor: .systemGreen))
+    }
+
+    private var standHours: some View {
+        value(viewModel.activitySummary.appleStandHours, viewModel.activitySummary.standHoursGoal, units: "hrs")
+            .foregroundStyle(Color.init(nsColor: .systemCyan))
+    }
+
+    private func value(_ lhs: Double, _ rhs: Double, units: String) -> some View {
+        Text("\(Int(lhs))/\(Int(rhs))" + units)
+    }
 }
 
 struct RingsView_Previews: PreviewProvider {
 
     static var previews: some View {
-        let viewModel = RingsViewModel(name: "rings.png",
-                                       date: .now,
-                                       activeEnergyBurned: 424,
-                                       activeEnergyBurnedGoal: 300,
-                                       appleStandHours: 9,
-                                       standHoursGoal: 10,
-                                       appleExerciseTime: 38,
-                                       exerciseTimeGoal: 30)
+        let viewModel = try! RingsViewModel(name: "rings.png",
+                                            date: .now,
+                                            summaryPath: "summary.json")
         return RingsView(viewModel: viewModel)
             .previewLayout(.fixed(width: 422, height: 100))
     }
