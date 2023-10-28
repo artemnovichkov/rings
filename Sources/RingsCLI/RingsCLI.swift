@@ -40,6 +40,7 @@ struct RingsCLI: ParsableCommand {
 
         let currentDirectoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         let imageURL = currentDirectoryURL.appendingPathComponent(outputFile)
+        print(imageURL)
         try data.write(to: imageURL)
     }
 }
