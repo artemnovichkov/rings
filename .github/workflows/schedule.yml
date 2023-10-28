@@ -14,6 +14,7 @@ jobs:
       - name: Update Gist
         run: |
           swift run RingsCLI -i rings.png -o rings.jpg
+          echo "$PWD"
           [ -f rings.jpg ] && echo "$FILE exist." || echo "$FILE does not exist."
           git config user.name github-actions
           git config user.email github-actions@github.com
