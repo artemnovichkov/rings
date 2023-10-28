@@ -21,7 +21,7 @@ jobs:
           cd gist
           git add rings.jpg
           git commit -m "Update image"
-          git push origin master
+          git push origin main
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
