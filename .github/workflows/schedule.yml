@@ -1,7 +1,5 @@
 name: Update gist with rings view
 on:
-  schedule:
-    - cron: "0 0 * * *"
   push:
     paths-ignore:
       - '**.md'
@@ -10,7 +8,7 @@ on:
       
 jobs:
   update-gist:
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v3
       - name: Update Gist
