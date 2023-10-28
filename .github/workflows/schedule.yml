@@ -1,0 +1,29 @@
+name: Update gist with random Xcode shortcut
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    paths-ignore:
+      - '**.md'
+    branches:    
+      - master
+      
+jobs:
+  update-gist:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+      - name: Update Gist
+        run: |
+          swift run RingsCLI -i rings.png -o rings.jpg
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git clone "https://user:${GH_TOKEN}@gist.github.com/${GIST_TOKEN}.git" gist
+          mv image.jpg gist
+          cd gist
+          git add image.jpg
+          git commit -m "Update image"
+          git push origin master
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
